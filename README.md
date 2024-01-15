@@ -13,6 +13,7 @@ Project ini dibuat menggunakan Bahasa [Flutter](https://docs.flutter.dev) sebaga
 
 ![Login](https://drive.google.com/uc?id=1eckHowustCs0i_LRNmnNqsvWmE5jAcXs)
 
-![Register](https://drive.google.com/uc?id=1eckHowustCs0i_LRNmnNqsvWmE5jAcXs)
+![Register](https://drive.google.com/uc?id=1C_CElYCKv6h4q77VEsmkMgG-TbceXtZA)
+
 
 
