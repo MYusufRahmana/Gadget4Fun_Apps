@@ -9,10 +9,10 @@ Aplikasi ini dibangun oleh [M Yusuf Rahmana](https://github.com/MYusufRahmana), 
 Project ini dibuat menggunakan Bahasa [Flutter](https://docs.flutter.dev) sebagai frontend utama tema ini merupakan terinspirasi dari website [GSM Arena](https://www.gsmarena.com) yang merupakan website yang menyediakan informasi terkait spesifikasi handphone dari tahun rilis,Ram dll.
 
 ## Halaman SignIn,Login,Register
-![SignIn](https://drive.google.com/uc?id=1C_CElYCKv6h4q77VEsmkMgG-TbceXtZA)
-
-![SignUp](https://drive.google.com/uc?id=1-vth0ajnUSR1jIYiYjaPxLOTJcB86aSK)
+![SignIn](https://drive.google.com/uc?id=1-vth0ajnUSR1jIYiYjaPxLOTJcB86aSK)
 
 ![Login](https://drive.google.com/uc?id=1eckHowustCs0i_LRNmnNqsvWmE5jAcXs)
+
+![Register](https://drive.google.com/uc?id=1eckHowustCs0i_LRNmnNqsvWmE5jAcXs)
 
 
