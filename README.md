@@ -5,4 +5,4 @@ Adalah sebuah Aplikasi yang terinspirasi dari website [GSM Arena](https://www.gs
 Aplikasi ini dibangun oleh [M Yusuf Rahmana](https://github.com/MYusufRahmana), [Falatehan Rais](https://github.com/falatehanrais), [Dimas Zulfahmi](https://github.com/MDimasZ) dan [M Ubaidillah](https://github.com/Ubaiii123). Aplikasi ini merupakan tugas project besar dari mata kuliah Pengembangan Aplikasi Bergerak I yang di ajari oleh dosen [Bpk Ahmad Farisi](https://github.com/AhmFarisi)
 
 ## Informasi Project
-![Home Page](https://drive.google.com/drive/folders/1R6KCcmzyQYfcCsRftIkjY0v-wNgR0iob/Tampilan1.png)
+![Home Page](https://drive.google.com/file/d/16dxFLwwgMes-J4jSUkuNyTurEBAS43L4/view?usp=drive_link)
