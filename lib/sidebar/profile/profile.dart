@@ -2,30 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:pab_tean/main/home_ponsel.dart';
 import 'package:pab_tean/sidebar/profile/login.dart';
 
-class profile extends StatefulWidget {
-  const profile({Key? key}) : super(key: key);
+class Profil extends StatefulWidget {
+  const Profil({Key? key}) : super(key: key);
 
   @override
-  _profileState createState() => _profileState();
+  _ProfilState createState() => _ProfilState();
 }
 
-class _profileState extends State<profile> {
-  bool isSignedIn = false;
+class _ProfilState extends State<Profil> {
+  bool isMasuk = false;
   String email = '';
-  String userName = '';
+  String namaPengguna = '';
 
-  void signIn(String username, String email) {
+  void masuk(String username, String email) {
     setState(() {
-      isSignedIn = true;
-      userName = username;
+      isMasuk = true;
+      namaPengguna = username;
       this.email = email;
     });
   }
 
-  void signOut() {
+  void keluar() {
     setState(() {
-      isSignedIn = false;
-      userName = '';
+      isMasuk = false;
+      namaPengguna = '';
       email = '';
     });
   }
@@ -34,17 +34,18 @@ class _profileState extends State<profile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile'),
+        title: const Text('Profil'),
         backgroundColor: Colors.grey,
         centerTitle: true,
         leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => home_ponsel()),
-              );
-            }),
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => home_ponsel()),
+            );
+          },
+        ),
       ),
       body: Stack(
         children: [
@@ -78,7 +79,7 @@ class _profileState extends State<profile> {
                                 AssetImage('assets/images/user/User.png'),
                           ),
                         ),
-                        if (isSignedIn)
+                        if (isMasuk)
                           IconButton(
                             onPressed: () {},
                             icon: const Icon(
@@ -113,7 +114,7 @@ class _profileState extends State<profile> {
                             width: 8,
                           ),
                           Text(
-                            'Username',
+                            'Nama Pengguna',
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -126,10 +127,10 @@ class _profileState extends State<profile> {
                       ': ',
                       style: TextStyle(fontSize: 18),
                     ),
-                    if (isSignedIn)
+                    if (isMasuk)
                       Expanded(
                         child: Text(
-                          '$userName',
+                          '$namaPengguna',
                           style: const TextStyle(fontSize: 18),
                         ),
                       ),
@@ -171,14 +172,14 @@ class _profileState extends State<profile> {
                       ': ',
                       style: TextStyle(fontSize: 18),
                     ),
-                    if (isSignedIn)
+                    if (isMasuk)
                       Expanded(
                         child: Text(
                           '$email',
                           style: const TextStyle(fontSize: 18),
                         ),
                       ),
-                    if (isSignedIn) const Icon(Icons.edit),
+                    if (isMasuk) const Icon(Icons.edit),
                   ],
                 ),
                 const SizedBox(
@@ -190,19 +191,19 @@ class _profileState extends State<profile> {
                 const SizedBox(
                   height: 20,
                 ),
-                isSignedIn
+                isMasuk
                     ? TextButton(
-                        onPressed: signOut, child: const Text('Sign Out'))
+                        onPressed: keluar, child: const Text('Keluar'))
                     : TextButton(
                         onPressed: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => login(signIn),
+                              builder: (context) => Login(masuk),
                             ),
                           );
                         },
-                        child: const Text('Sign In'))
+                        child: const Text('Masuk'))
               ],
             ),
           ),

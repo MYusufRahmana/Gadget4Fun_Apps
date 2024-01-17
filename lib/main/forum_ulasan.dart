@@ -17,11 +17,20 @@ class forum_ulasan extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Image.asset(
-        'assets/images/phone/LogoGadget.png', // Gantilah dengan path sesuai lokasi logo Anda
-        height: 60, // Sesuaikan tinggi logo sesuai kebutuhan
-      ),
-      centerTitle: true,
-      backgroundColor: Colors.brown,
+          'assets/images/phone/LogoGadget.png',
+          height: 60,
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.brown,
+        actions: [
+          IconButton(
+            onPressed: () {
+              // Tambahkan fungsi untuk menangani tombol menu di sini
+              // Contoh: Navigator.push(context, MaterialPageRoute(builder: (context) => YourMenuPage()));
+            },
+            icon: Icon(Icons.search),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -30,7 +39,7 @@ class forum_ulasan extends StatelessWidget {
           itemBuilder: (context, index) {
             final forum_model details = forum_modelList[index];
 
-             return Column(
+            return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 InkWell(
@@ -117,7 +126,7 @@ class forum_ulasan extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const profile()),
+                    MaterialPageRoute(builder: (context) => const Profil()),
                   );
                 }),
             //Settings
@@ -133,7 +142,7 @@ class forum_ulasan extends StatelessWidget {
             //MyDevice
             ListTile(
                 leading: const Icon(Icons.device_unknown_rounded),
-                title: const Text('My Device'),
+                title: const Text('Asus Rog Phone 6'),
                 onTap: () {
                   Navigator.push(
                     context,
@@ -159,9 +168,9 @@ class forum_ulasan extends StatelessWidget {
             label: 'Video Ulasan',
           ),
           BottomNavigationBarItem(
-      icon: Icon(Icons.compare), // Icon untuk Compare Device
-      label: 'Compare Devices',
-    ),
+            icon: Icon(Icons.compare),
+            label: 'Compare Devices',
+          ),
         ],
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.brown,
@@ -189,17 +198,20 @@ class forum_ulasan extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => const video_ulasan()),
               );
               break;
-              case 3: // Handle aksi ketika Compare Devices ditekan
-                Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const CompareDevice()),
-        );
-        break;
+            case 3:
+              // Handle aksi ketika Compare Devices ditekan
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const CompareDevice()),
+              );
+              break;
           }
         },
       ),
     );
   }
-  
-  forum_ulasan_detail({required forum_model details}) {}
+}
+
+class forum_ulasan_detail {
+  const forum_ulasan_detail({required forum_model details});
 }

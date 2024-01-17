@@ -2,18 +2,18 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pab_tean/sidebar/profile/register.dart';
 
-class login extends StatefulWidget {
+class Login extends StatefulWidget {
   final Function(String, String) onSignIn;
 
-  const login(this.onSignIn, {Key? key}) : super(key: key);
+  const Login(this.onSignIn, {Key? key}) : super(key: key);
 
   @override
-  _loginState createState() => _loginState();
+  _LoginState createState() => _LoginState();
 }
 
-class _loginState extends State<login> {
+class _LoginState extends State<Login> {
   TextEditingController usernameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -46,23 +46,26 @@ class _loginState extends State<login> {
             ),
             const SizedBox(height: 16),
             TextFormField(
-              controller: emailController,
+              controller: passwordController,
+              obscureText: true, // Hide the entered text
               decoration: const InputDecoration(
-                labelText: 'Email',
+                labelText: 'Password',
               ),
             ),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                // Validasi apakah username atau email kosong
+                // Validasi apakah username dan password tidak kosong
                 if (usernameController.text.isNotEmpty &&
-                    emailController.text.isNotEmpty) {
+                    passwordController.text.isNotEmpty) {
                   widget.onSignIn(
                     usernameController.text,
-                    emailController.text,
+                    passwordController.text,
                   );
                   Navigator.pop(context);
-                } else {}
+                } else {
+                  // Tampilkan pesan kesalahan jika diperlukan
+                }
               },
               style: ElevatedButton.styleFrom(
                 elevation: 0,
@@ -82,8 +85,6 @@ class _loginState extends State<login> {
                       decoration: TextDecoration.underline,
                       fontSize: 16,
                     ),
-
-                    //Penambahan Tap Gesture
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
                         Navigator.push(

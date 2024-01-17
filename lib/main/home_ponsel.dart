@@ -8,6 +8,8 @@ import 'package:pab_tean/main/video_ulasan.dart';
 import 'package:pab_tean/main/forum_ulasan.dart';
 import 'package:pab_tean/sidebar/settings.dart';
 
+
+
 class home_ponsel extends StatelessWidget {
   const home_ponsel({Key? key}) : super(key: key);
 
@@ -16,11 +18,20 @@ class home_ponsel extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Image.asset(
-        'assets/images/phone/LogoGadget.png', // Gantilah dengan path sesuai lokasi logo Anda
-        height: 60, // Sesuaikan tinggi logo sesuai kebutuhan
-      ),
-      centerTitle: true,
-      backgroundColor: Colors.brown,
+          'assets/images/phone/LogoGadget.png',
+          height: 60,
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.brown,
+        actions: [
+          IconButton(
+            onPressed: () {
+              // Tambahkan fungsi untuk menangani tombol menu di sini
+              // Contoh: Navigator.push(context, MaterialPageRoute(builder: (context) => YourMenuPage()));
+            },
+            icon: Icon(Icons.search)
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -104,7 +115,7 @@ class home_ponsel extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const profile()),
+                  MaterialPageRoute(builder: (context) => const Profil()),
                 );
               },
             ),
@@ -122,7 +133,7 @@ class home_ponsel extends StatelessWidget {
             //Profile
             ListTile(
               leading: const Icon(Icons.device_unknown_rounded),
-              title: const Text('My Device'),
+              title: const Text('Asus Rog Phone 6'),
               onTap: () {
                 Navigator.push(
                   context,
@@ -148,10 +159,10 @@ class home_ponsel extends StatelessWidget {
             icon: Icon(Icons.videocam_sharp),
             label: 'Video Ulasan',
           ),
-            BottomNavigationBarItem(
-      icon: Icon(Icons.compare), // Icon untuk Compare Device
-      label: 'Compare Devices',
-    ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.compare),
+            label: 'Compare Devices',
+          ),
         ],
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.brown,
@@ -179,12 +190,13 @@ class home_ponsel extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => const video_ulasan()),
               );
               break;
-              case 3: // Handle aksi ketika Compare Devices ditekan
-                Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const CompareDevice()),
-        );
-        break;
+            case 3:
+              // Handle aksi ketika Compare Devices ditekan
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const CompareDevice()),
+              );
+              break;
           }
         },
       ),
