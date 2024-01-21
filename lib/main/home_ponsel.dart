@@ -2,16 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:pab_tean/main/compare_device.dart';
 import 'package:pab_tean/main/phone.dart';
 import 'package:pab_tean/model/phone_details.dart';
-import 'package:pab_tean/sidebar/mydevice.dart';
-import 'package:pab_tean/sidebar/profile/profile.dart';
 import 'package:pab_tean/main/video_ulasan.dart';
 import 'package:pab_tean/main/forum_ulasan.dart';
+import 'package:pab_tean/sidebar/mydevice.dart';
+import 'package:pab_tean/sidebar/profile/profile.dart';
 import 'package:pab_tean/sidebar/settings.dart';
 
-
-
-class home_ponsel extends StatelessWidget {
+class home_ponsel extends StatefulWidget {
   const home_ponsel({Key? key}) : super(key: key);
+
+  @override
+  _HomePonselState createState() => _HomePonselState();
+}
+
+class _HomePonselState extends State<home_ponsel> {
+  late List<PhoneDetails> displayedPhoneList;
+
+  @override
+  void initState() {
+    super.initState();
+    displayedPhoneList = List.from(PhoneDetailsList);
+  }
+
+  void searchPhone(String query) {
+    setState(() {
+      displayedPhoneList = PhoneDetailsList
+          .where((phone) => phone.name.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +44,16 @@ class home_ponsel extends StatelessWidget {
         backgroundColor: Colors.brown,
         actions: [
           IconButton(
-            onPressed: () {
-              // Tambahkan fungsi untuk menangani tombol menu di sini
-              // Contoh: Navigator.push(context, MaterialPageRoute(builder: (context) => YourMenuPage()));
+            onPressed: () async {
+              final String? result = await showSearch(
+                context: context,
+                delegate: PhoneSearchDelegate(PhoneDetailsList.map((details) => details.name).toList()),
+              );
+              if (result != null && result.isNotEmpty) {
+                searchPhone(result);
+              }
             },
-            icon: Icon(Icons.search)
+            icon: Icon(Icons.search),
           ),
         ],
       ),
@@ -42,7 +66,7 @@ class home_ponsel extends StatelessWidget {
             mainAxisSpacing: 15.0,
           ),
           itemBuilder: (context, index) {
-            final PhoneDetails details = PhoneDetailsList[index];
+            final PhoneDetails details = displayedPhoneList[index];
 
             return InkWell(
               onTap: () {
@@ -76,7 +100,7 @@ class home_ponsel extends StatelessWidget {
               ),
             );
           },
-          itemCount: PhoneDetailsList.length,
+          itemCount: displayedPhoneList.length,
         ),
       ),
       drawer: Drawer(
@@ -166,7 +190,7 @@ class home_ponsel extends StatelessWidget {
         ],
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.brown,
-        currentIndex: 2,
+        currentIndex: 1,
         onTap: (index) {
           switch (index) {
             case 0:
@@ -200,6 +224,83 @@ class home_ponsel extends StatelessWidget {
           }
         },
       ),
+    );
+  }
+}
+
+class PhoneSearchDelegate extends SearchDelegate<String> {
+  final List<String> phoneNames;
+
+  PhoneSearchDelegate(this.phoneNames);
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: Icon(Icons.clear),
+        onPressed: () {
+          query = '';
+        },
+      ),
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.arrow_back),
+      onPressed: () {
+        close(context, '');
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    List<String> searchResults = phoneNames
+        .where((phone) => phone.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+
+    return ListView.builder(
+      itemCount: searchResults.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(searchResults[index]),
+          onTap: () {
+            // Navigasi ke halaman detail handphone sesuai dengan nama yang ditekan
+            String selectedPhoneName = searchResults[index];
+            PhoneDetails selectedPhone = PhoneDetailsList.firstWhere((phone) => phone.name == selectedPhoneName);
+
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => PhoneDetailsScreen(details: selectedPhone),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    List<String> suggestions = phoneNames
+        .where((phone) => phone.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+
+    return ListView.builder(
+      itemCount: suggestions.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(suggestions[index]),
+          onTap: () {
+            // Set query dan close pencarian ketika pengguna memilih salah satu saran
+            query = suggestions[index];
+            close(context, query);
+          },
+        );
+      },
     );
   }
 }

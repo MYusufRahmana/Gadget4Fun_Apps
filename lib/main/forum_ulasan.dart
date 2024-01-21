@@ -8,8 +8,29 @@ import 'package:pab_tean/main/home_ponsel.dart';
 import 'package:pab_tean/sidebar/settings.dart';
 import 'package:pab_tean/main/forum_ulasan_detail.dart';
 
-class forum_ulasan extends StatelessWidget {
+class forum_ulasan extends StatefulWidget {
   const forum_ulasan({Key? key}) : super(key: key);
+
+  @override
+  _forum_ulasanState createState() => _forum_ulasanState();
+}
+
+class _forum_ulasanState extends State<forum_ulasan> {
+  late List<forum_model> displayedForumList;
+
+  @override
+  void initState() {
+    super.initState();
+    displayedForumList = List.from(forum_modelList);
+  }
+
+  void searchForum(String query) {
+    setState(() {
+      displayedForumList = forum_modelList
+          .where((forum) => forum.name.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +45,14 @@ class forum_ulasan extends StatelessWidget {
         backgroundColor: Colors.brown,
         actions: [
           IconButton(
-            onPressed: () {
-              // Tambahkan fungsi untuk menangani tombol menu di sini
-              // Contoh: Navigator.push(context, MaterialPageRoute(builder: (context) => YourMenuPage()));
+            onPressed: () async {
+              final String? result = await showSearch(
+                context: context,
+                delegate: ForumSearchDelegate(forum_modelList.map((forum) => forum.name).toList()),
+              );
+              if (result != null && result.isNotEmpty) {
+                searchForum(result);
+              }
             },
             icon: Icon(Icons.search),
           ),
@@ -35,9 +61,9 @@ class forum_ulasan extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListView.builder(
-          itemCount: forum_modelList.length,
+          itemCount: displayedForumList.length,
           itemBuilder: (context, index) {
-            final forum_model details = forum_modelList[index];
+            final forum_model details = displayedForumList[index];
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -212,6 +238,82 @@ class forum_ulasan extends StatelessWidget {
   }
 }
 
-class forum_ulasan_detail {
-  const forum_ulasan_detail({required forum_model details});
+class ForumSearchDelegate extends SearchDelegate<String> {
+  final List<String> forumNames;
+
+  ForumSearchDelegate(this.forumNames);
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: Icon(Icons.clear),
+        onPressed: () {
+          query = '';
+        },
+      ),
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.arrow_back),
+      onPressed: () {
+        close(context, '');
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    List<String> searchResults = forumNames
+        .where((forum) => forum.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+
+    return ListView.builder(
+      itemCount: searchResults.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(searchResults[index]),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ForumUlasanDetail(
+                  details: forum_modelList.firstWhere((forum) => forum.name == searchResults[index]),
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    List<String> suggestions = forumNames
+        .where((forum) => forum.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+
+    return ListView.builder(
+      itemCount: suggestions.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(suggestions[index]),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ForumUlasanDetail(
+                  details: forum_modelList.firstWhere((forum) => forum.name == suggestions[index]),
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
 }

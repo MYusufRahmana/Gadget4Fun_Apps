@@ -8,6 +8,79 @@ import 'package:pab_tean/main/home_ponsel.dart';
 import 'package:pab_tean/sidebar/settings.dart';
 import 'package:pab_tean/main/compare_device.dart';
 
+class VideoSearchDelegate extends SearchDelegate<String> {
+  final List<video_model> videoModels;
+
+  VideoSearchDelegate(this.videoModels);
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: Icon(Icons.clear),
+        onPressed: () {
+          query = '';
+        },
+      ),
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.arrow_back),
+      onPressed: () {
+        close(context, '');
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    List<video_model> searchResults = videoModels
+        .where((video) => video.name.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+
+    return ListView.builder(
+      itemCount: searchResults.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(searchResults[index].name),
+          onTap: () {
+            // Launch URL ketika item hasil pencarian dipilih
+            launchUrl(Uri.parse(searchResults[index].link));
+            // Menutup tampilan pencarian
+            close(context, searchResults[index].name);
+          },
+        );
+      },
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    List<video_model> suggestions = videoModels
+        .where((video) => video.name.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+
+    return ListView.builder(
+      itemCount: suggestions.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(suggestions[index].name),
+          onTap: () {
+            query = suggestions[index].name;
+            // Launch URL ketika item saran dipilih
+            launchUrl(Uri.parse(suggestions[index].link));
+            // Menutup tampilan pencarian
+            close(context, suggestions[index].name);
+          },
+        );
+      },
+    );
+  }
+}
+
 class video_ulasan extends StatelessWidget {
   const video_ulasan({Key? key}) : super(key: key);
 
@@ -25,9 +98,22 @@ class video_ulasan extends StatelessWidget {
         backgroundColor: Colors.brown,
         actions: [
           IconButton(
-            onPressed: () {
-              // Tambahkan fungsi untuk menangani tombol menu di sini
-              // Contoh: Navigator.push(context, MaterialPageRoute(builder: (context) => YourMenuPage()));
+            onPressed: () async {
+              final String? result = await showSearch(
+                context: context,
+                delegate: VideoSearchDelegate(video_modelList),
+              );
+              if (result != null && result.isNotEmpty) {
+                // Implementasi logika ketika hasil pencarian dipilih
+                // Misalnya, tindakan khusus atau pindah ke halaman detail video
+                // (pemrosesan ini juga dapat diintegrasikan di dalam VideoSearchDelegate)
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => DetailVideoPage(videoTitle: result),
+                //   ),
+                // );
+              }
             },
             icon: Icon(Icons.search),
           ),
@@ -179,10 +265,7 @@ class video_ulasan extends StatelessWidget {
               );
               break;
             case 2:
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const video_ulasan()),
-              );
+              // Jangan lupa tambahkan logika untuk pindah ke halaman video_ulasan
               break;
             case 3:
               Navigator.push(
@@ -195,5 +278,37 @@ class video_ulasan extends StatelessWidget {
       ),
     );
   }
+}
 
+class DetailVideoPage extends StatelessWidget {
+  final String videoTitle;
+
+  const DetailVideoPage({Key? key, required this.videoTitle}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // Implementasi halaman detail video
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(videoTitle),
+      ),
+      body: Center(
+        child: Text('Detail video untuk $videoTitle'),
+      ),
+    );
+  }
+}
+
+void launchUrl(Uri uri) async {
+  if (await canLaunch(uri.toString())) {
+    await launch(uri.toString());
+  } else {
+    throw 'Could not launch $uri';
+  }
+}
+
+void main() {
+  runApp(MaterialApp(
+    home: video_ulasan(),
+  ));
 }
